@@ -1,0 +1,19 @@
+definition:
+  - name: "access_token"
+    description: "Ensure the access token are still valid"
+    fields:
+      - name: "token_name"
+        description: "The access token"
+        type: "string"
+        required: true
+      - name: "expires_at"
+        description: "The expiration date"
+        type: "datetime"
+        required: true
+
+watch:
+  - access_token:
+      - name: "gitlab_project_A1"
+        expires_at: "2020-12-31T23:59:59Z"
+      - name: "gitlab_project_A2"
+        expires_at: "2020-12-31T23:59:59Z"
