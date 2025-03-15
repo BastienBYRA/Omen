@@ -1,9 +1,22 @@
 definition:
   - name: "access_token"
     description: "Ensure the access token are still valid"
+    fields_required_by_default: true
     fields:
       - name: "token_name"
         description: "The access token"
+        type: "string"
+        required: true
+      - name: "expires_at"
+        description: "The expiration date"
+        type: "datetime"
+        required: true
+  - name: "certs"
+    description: "Ensure the certificate are still valid"
+    fields_required_by_default: true
+    fields:
+      - name: "cert_name"
+        description: "The certificate"
         type: "string"
         required: true
       - name: "expires_at"
@@ -17,3 +30,10 @@ watch:
         expires_at: "2020-12-31T23:59:59Z"
       - name: "gitlab_project_A2"
         expires_at: "2020-12-31T23:59:59Z"
+
+config:
+  endpoint: "https://bob"
+  sending_interval: 60
+  # retries: 3
+  # timeout: 10
+  all_fields_required_by_default: true
