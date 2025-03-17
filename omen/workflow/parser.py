@@ -2,6 +2,7 @@ import yaml
 
 from models.definition import Definition
 from models.definitionField import DefinitionField
+from workflow.transformer import transform_to_prometheus_metrics
 
 def parse_config(yaml_file_path: str) -> dict[Definition]:
     """
@@ -10,6 +11,7 @@ def parse_config(yaml_file_path: str) -> dict[Definition]:
     with open(yaml_file_path, 'r') as file:
         data = yaml.safe_load(file)
 
+        # Get definition objects
         list_definition: list[dict] = data.get('definition')
         if not list_definition:
             return {}
@@ -19,7 +21,16 @@ def parse_config(yaml_file_path: str) -> dict[Definition]:
             val: Definition = get_definition(definition)
             definition_dict[val.name] = val
 
-        return definition_dict
+        # Get metrics objects
+        list_metrics: list[dict] = data.get('metrics')
+        if not list_metrics:
+            print("No metrics list found in the configuration file")
+            exit(1)
+
+        get_metrics(list_metrics, definition_dict)
+
+        exit(0)
+        # return definition_dict
     
 
 def get_definition(definition_dict: dict):
@@ -52,3 +63,18 @@ def get_definition(definition_dict: dict):
     definition: Definition = Definition(name, description, definition_field_dict, fields_required_by_default)
 
     return definition
+
+
+def get_metrics(list_metrics: list[dict], definition_dict: dict[str, Definition]):
+
+    for metric in list_metrics:
+        # For each metric defined in "metrics", get the name
+        metrics_name: str = next(iter(metric.keys())) # https://stackoverflow.com/questions/18686903/dict-keys0-on-python-3
+
+        if definition_dict.get(metrics_name):
+            metrics_description = definition_dict.get(metrics_name).description
+            # TODO: Check the fields match with the definition
+            transform_to_prometheus_metrics(metrics_name, metric, metrics_description)
+        else:
+            # dict_metrics_to_prometheus_metrics(metrics_name, metric)
+            print("No")

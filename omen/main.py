@@ -10,7 +10,7 @@ import workflow.parser as parser
 def run(config="."):
   path = validator.validate_config_file_path(config)
   definition: dict[str, Definition] = parser.parse_config(path)
-  metrics = generate_metrics(definition)
+  metrics = parser.get_metrics(path, definition)
 
 if __name__ == '__main__':
   fire.Fire()

@@ -24,12 +24,24 @@ definition:
         type: "datetime"
         required: true
 
-watch:
+metrics:
   - access_token:
       - name: "gitlab_project_A1"
         expires_at: "2020-12-31T23:59:59Z"
       - name: "gitlab_project_A2"
         expires_at: "2020-12-31T23:59:59Z"
+  - certs:
+      - name: "gitlab_project_A1"
+        expires_at: "2020-12-31T23:59:59Z"
+      - name: "gitlab_project_A2"
+        expires_at: "2020-12-31T23:59:59Z"
+# metrics:
+#   - metrics: access_token
+#     fields:
+#       - name: "gitlab_project_A1"
+#         expires_at: "2020-12-31T23:59:59Z"
+#       - name: "gitlab_project_A2"
+#         expires_at: "2020-12-31T23:59:59Z"
 
 config:
   endpoint: "https://bob"
